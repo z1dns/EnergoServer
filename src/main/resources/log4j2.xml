@@ -1,0 +1,18 @@
+<Configuration status="INFO" strict="true">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{HH:mm:ss,SSS}[%p{length=1}][%c{-2}][%t:%T] - %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="${LOG_PATTERN}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
