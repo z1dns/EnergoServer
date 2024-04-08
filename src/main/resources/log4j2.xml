@@ -5,14 +5,23 @@
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout
-                    pattern="${LOG_PATTERN}"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
+        <RollingFile name="File" fileName="target/logs/app.log"
+                      filePattern="target/logs/$${date:MM.yyyy}/app-%d{dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
-        <Root level="debug">
-            <AppenderRef ref="Console"/>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console" level="INFO"/>
+            <AppenderRef ref="File"/>
         </Root>
     </Loggers>
 </Configuration>
