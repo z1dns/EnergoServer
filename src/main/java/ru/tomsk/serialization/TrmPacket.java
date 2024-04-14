@@ -1,6 +1,5 @@
 package ru.tomsk.serialization;
 
-import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -58,7 +57,7 @@ public class TrmPacket implements Serialization {
     }
 
     @Override
-    public void serialize(OutputStream outputStream) throws IOException {
+    public byte [] serialize() {
         byte [] data = new byte[DATA_LENGTH];
         var buffer = ByteBuffer.wrap(data);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -72,15 +71,15 @@ public class TrmPacket implements Serialization {
         crcBuffer.order(ByteOrder.LITTLE_ENDIAN);
         crcBuffer.putShort(crcField);
 
-        outputStream.write(data);
-        outputStream.write(crcData);
+        byte [] result = Arrays.copyOf(data, data.length + crcData.length);
+        System.arraycopy(crcData, 0, result, data.length, crcData.length);
+        return result;
     }
 
     @Override
-    public void deserialize(InputStream inputStream) throws IOException {
-        byte [] bytes = inputStream.readAllBytes();
+    public void deserialize(byte [] bytes) throws IllegalArgumentException {
         if (bytes.length != DATA_LENGTH + CRC_LENGTH) {
-            throw new IOException(String.format("Incorrect count of bytes(%d) for %s", bytes.length, this.getClass()));
+            throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for %s", bytes.length, this.getClass()));
         }
         byte [] data = Arrays.copyOfRange(bytes, 0, DATA_LENGTH);
         var buffer = ByteBuffer.wrap(data);
