@@ -23,4 +23,16 @@ public class CRC16 {
         return crc;
     }
 
+    public static short calculate(byte[] data, int off, int len) {
+        short crc = CRC_INIT;
+        if (off < 0 || len < 0 || (off + len) > data.length) {
+            throw new IndexOutOfBoundsException(String.format("Invalid arguments for calculate CRC16, offset:%d; length:%d, data length:%d",
+                    off, len, data.length));
+        }
+        for (int i = off; i < off + len; ++i) {
+            crc = culCalcCRC(data[i], crc);
+        }
+        return crc;
+    }
+
 }
