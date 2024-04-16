@@ -58,41 +58,30 @@ public class TrmPacket implements Serialization {
 
     @Override
     public byte [] serialize() {
-        byte [] data = new byte[DATA_LENGTH];
+        byte [] data = new byte[length()];
         var buffer = ByteBuffer.wrap(data);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort(idField);
         buffer.putInt(timestampField);
         buffer.putShort(surfaceTemperatureField);
         buffer.putShort(airTemperatureField);
-        crcField =  isEmpty() ? 0 : CRC16.calculate(data);
-        byte [] crcData = new byte[CRC_LENGTH];
-        var crcBuffer = ByteBuffer.wrap(crcData);
-        crcBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        crcBuffer.putShort(crcField);
-
-        byte [] result = Arrays.copyOf(data, data.length + crcData.length);
-        System.arraycopy(crcData, 0, result, data.length, crcData.length);
-        return result;
+        crcField =  isEmpty() ? 0 : CRC16.calculate(data, 0, DATA_LENGTH);
+        buffer.putShort(crcField);
+        return data;
     }
 
     @Override
     public void deserialize(byte [] bytes) throws IllegalArgumentException {
-        if (bytes.length != DATA_LENGTH + CRC_LENGTH) {
-            throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for %s", bytes.length, this.getClass()));
+        if (bytes.length != length()) {
+            throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for deserialize %s", bytes.length, this.getClass()));
         }
-        byte [] data = Arrays.copyOfRange(bytes, 0, DATA_LENGTH);
-        var buffer = ByteBuffer.wrap(data);
+        var buffer = ByteBuffer.wrap(bytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         idField = buffer.getShort();
         timestampField = buffer.getInt();
         surfaceTemperatureField = buffer.getShort();
         airTemperatureField = buffer.getShort();
-
-        byte [] crcData = Arrays.copyOfRange(bytes, DATA_LENGTH, DATA_LENGTH + CRC_LENGTH);
-        var crcBuffer = ByteBuffer.wrap(crcData);
-        crcBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        crcField = crcBuffer.getShort();
-        correctCRC = crcField == CRC16.calculate(data);
+        crcField = buffer.getShort();
+        correctCRC = crcField == CRC16.calculate(bytes, 0, DATA_LENGTH);
     }
 }
