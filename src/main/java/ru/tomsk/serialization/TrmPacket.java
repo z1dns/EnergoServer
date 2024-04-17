@@ -2,7 +2,6 @@ package ru.tomsk.serialization;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class TrmPacket implements Serialization {

@@ -89,5 +89,6 @@ public class TrmPacketTest {
         var actual = new TrmPacket();
         actual.deserialize(bytes);
         assertEquals(expected, actual);
+        assertTrue(actual.isCRCCorrect());
     }
 }
