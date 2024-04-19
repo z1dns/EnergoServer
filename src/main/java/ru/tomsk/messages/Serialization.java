@@ -1,4 +1,4 @@
-package ru.tomsk.serialization;
+package ru.tomsk.messages;
 
 public interface Serialization {
     byte [] serialize();

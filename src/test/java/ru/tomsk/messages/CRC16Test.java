@@ -1,4 +1,4 @@
-package ru.tomsk.serialization;
+package ru.tomsk.messages;
 
 import org.junit.jupiter.api.Test;
 

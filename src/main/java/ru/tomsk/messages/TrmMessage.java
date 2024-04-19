@@ -1,10 +1,10 @@
-package ru.tomsk.serialization;
+package ru.tomsk.messages;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Objects;
 
-public class TrmPacket implements Serialization {
+public class TrmMessage implements Serialization {
     private static final int DATA_LENGTH = 10;
     private static final int CRC_LENGTH = 2;
     private boolean correctCRC = false;
@@ -28,7 +28,7 @@ public class TrmPacket implements Serialization {
 
     @Override
     public String toString() {
-        return "TrmPacket{" +
+        return "TrmMessage{" +
                 "idField=" + idField +
                 ", timestampField=" + timestampField +
                 ", surfaceTemperatureField=" + surfaceTemperatureField +
@@ -43,11 +43,11 @@ public class TrmPacket implements Serialization {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TrmPacket trmPacket = (TrmPacket) o;
-        return idField == trmPacket.idField &&
-                timestampField == trmPacket.timestampField &&
-                surfaceTemperatureField == trmPacket.surfaceTemperatureField &&
-                airTemperatureField == trmPacket.airTemperatureField;
+        TrmMessage trmMessage = (TrmMessage) o;
+        return idField == trmMessage.idField &&
+                timestampField == trmMessage.timestampField &&
+                surfaceTemperatureField == trmMessage.surfaceTemperatureField &&
+                airTemperatureField == trmMessage.airTemperatureField;
     }
 
     @Override

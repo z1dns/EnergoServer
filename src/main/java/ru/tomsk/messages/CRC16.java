@@ -1,4 +1,4 @@
-package ru.tomsk.serialization;
+package ru.tomsk.messages;
 
 public class CRC16 {
     private static final short CRC16_POLY = (short) 0x8005;
