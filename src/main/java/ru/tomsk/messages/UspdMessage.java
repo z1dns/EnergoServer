@@ -6,21 +6,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class UspdMessage implements Serialization {
+public class UspdMessage extends Message {
     static final int TRM_COUNT = 250;
     private static final int DATA_LENGTH = 2 + TRM_COUNT * TrmMessage.length();
-    private static final int CRC_LENGTH = 2;
-    private boolean correctCRC = false;
     short idField = 0; //unsigned
     TrmMessage[] trmMessageArray = new TrmMessage[TRM_COUNT];
-    short crcField = 0; //unsigned
 
     public static int length() {
         return DATA_LENGTH + CRC_LENGTH;
-    }
-
-    public boolean isCRCCorrect() {
-        return correctCRC;
     }
 
     @Override

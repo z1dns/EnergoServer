@@ -4,22 +4,15 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Objects;
 
-public class TrmMessage implements Serialization {
+public class TrmMessage extends Message {
     private static final int DATA_LENGTH = 10;
-    private static final int CRC_LENGTH = 2;
-    private boolean correctCRC = false;
     short idField = 0; //unsigned
     int timestampField = 0; //unsigned
     short surfaceTemperatureField = 0; //signed
     short airTemperatureField = 0; //unsigned
-    short crcField = 0; //unsigned
 
     public boolean isEmpty() {
         return idField == 0 && timestampField == 0 && surfaceTemperatureField == 0 && airTemperatureField == 0;
-    }
-
-    public boolean isCRCCorrect() {
-        return correctCRC;
     }
 
     public static int length() {
