@@ -16,7 +16,7 @@ public class UspdMessage extends Message {
         return DATA_LENGTH + CRC_LENGTH;
     }
 
-    public static byte[] getTrmData(byte[] bytes, int trmIdx) {
+    public byte[] getTrmData(int trmIdx) {
         if (bytes.length != length()) {
             throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for getTrmData", bytes.length));
         }
@@ -55,16 +55,16 @@ public class UspdMessage extends Message {
 
     @Override
     public byte[] serialize() {
-        byte [] data = new byte[length()];
-        var buffer = ByteBuffer.wrap(data);
+        bytes = new byte[length()];
+        var buffer = ByteBuffer.wrap(bytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort(idField);
         for (var trmMessage : trmMessageArray) {
             buffer.put(trmMessage.serialize());
         }
-        crcField =  CRC16.calculate(data, 0, DATA_LENGTH);
+        crcField =  CRC16.calculate(bytes, 0, DATA_LENGTH);
         buffer.putShort(crcField);
-        return data;
+        return bytes;
     }
 
     @Override
@@ -72,7 +72,8 @@ public class UspdMessage extends Message {
         if (bytes.length != length()) {
             throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for deserialize %s", bytes.length, this.getClass()));
         }
-        var buffer = ByteBuffer.wrap(bytes);
+        this.bytes = bytes;
+        var buffer = ByteBuffer.wrap(this.bytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         idField = buffer.getShort();
         for (int trmIdx = 0; trmIdx < TRM_COUNT; ++trmIdx) {
@@ -83,7 +84,7 @@ public class UspdMessage extends Message {
             trmMessageArray[trmIdx] = trmMessage;
         }
         crcField = buffer.getShort();
-        correctCRC = crcField == CRC16.calculate(bytes, 0, DATA_LENGTH);
+        correctCRC = crcField == CRC16.calculate(this.bytes, 0, DATA_LENGTH);
     }
 
     private String arrayToString() {

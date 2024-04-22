@@ -50,16 +50,16 @@ public class TrmMessage extends Message {
 
     @Override
     public byte [] serialize() {
-        byte [] data = new byte[length()];
-        var buffer = ByteBuffer.wrap(data);
+        bytes = new byte[length()];
+        var buffer = ByteBuffer.wrap(bytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort(idField);
         buffer.putInt(timestampField);
         buffer.putShort(surfaceTemperatureField);
         buffer.putShort(airTemperatureField);
-        crcField =  isEmpty() ? 0 : CRC16.calculate(data, 0, DATA_LENGTH);
+        crcField =  isEmpty() ? 0 : CRC16.calculate(bytes, 0, DATA_LENGTH);
         buffer.putShort(crcField);
-        return data;
+        return bytes;
     }
 
     @Override
@@ -67,13 +67,14 @@ public class TrmMessage extends Message {
         if (bytes.length != length()) {
             throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for deserialize %s", bytes.length, this.getClass()));
         }
-        var buffer = ByteBuffer.wrap(bytes);
+        this.bytes = bytes;
+        var buffer = ByteBuffer.wrap(this.bytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         idField = buffer.getShort();
         timestampField = buffer.getInt();
         surfaceTemperatureField = buffer.getShort();
         airTemperatureField = buffer.getShort();
         crcField = buffer.getShort();
-        correctCRC = crcField == CRC16.calculate(bytes, 0, DATA_LENGTH);
+        correctCRC = crcField == CRC16.calculate(this.bytes, 0, DATA_LENGTH);
     }
 }

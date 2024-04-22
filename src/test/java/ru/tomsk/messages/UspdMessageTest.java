@@ -68,7 +68,9 @@ public class UspdMessageTest {
         expected.airTemperatureField = 0x1EFD;
         uspdMessage.trmMessageArray[idx] = expected;
         var bytes = uspdMessage.serialize();
-        var trmData = UspdMessage.getTrmData(bytes, idx);
+        var message = new UspdMessage();
+        message.deserialize(bytes);
+        var trmData = message.getTrmData(idx);
         var actual = new TrmMessage();
         actual.deserialize(trmData);
         assertEquals(expected, actual);
