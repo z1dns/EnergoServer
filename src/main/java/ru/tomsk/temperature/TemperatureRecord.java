@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public record TemperatureRecord(int trmID,
+public record TemperatureRecord(int deviceID,
                                 Instant timestamp,
                                 float surfaceTemperature,
                                 float airTemperature) {
@@ -14,8 +14,8 @@ public record TemperatureRecord(int trmID,
     public static final Instant MAX_DATETIME = ZonedDateTime.of(2100, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC")).toInstant();
 
     public TemperatureRecord {
-        if (trmID <= 0) {
-            throw new IllegalArgumentException(String.format("Invalid trmID: %d", trmID));
+        if (deviceID < DeviceID.MIN_VALUE) {
+            throw new IllegalArgumentException(String.format("Invalid deviceID: %d", deviceID));
         }
         if (timestamp.isBefore(MIN_DATETIME) || timestamp.isAfter(MAX_DATETIME)) {
             throw new IllegalArgumentException(String.format("Invalid datetime: %s", timestamp.atZone(ZoneId.of("UTC"))));
