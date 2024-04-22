@@ -1,6 +1,8 @@
 package ru.tomsk.messages;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 
@@ -44,5 +46,31 @@ public class UspdMessageTest {
         actual.deserialize(bytes);
         assertEquals(expected, actual);
         assertTrue(actual.isCRCCorrect());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 100, UspdMessage.TRM_COUNT - 1 })
+    void testGetTrmData(int idx) {
+        var uspdMessage = new UspdMessage();
+        uspdMessage.idField = 10;
+        for (int trmIdx = 0; trmIdx < UspdMessage.TRM_COUNT; ++trmIdx) {
+            var trmMessage = new TrmMessage();
+            trmMessage.idField = 0;
+            trmMessage.timestampField = 0;
+            trmMessage.surfaceTemperatureField = 0;
+            trmMessage.airTemperatureField = 0;
+            uspdMessage.trmMessageArray[trmIdx] = trmMessage;
+        }
+        var expected = new TrmMessage();
+        expected.idField = 0x1234;
+        expected.timestampField = 0x12345678;
+        expected.surfaceTemperatureField = 0x3ABC;
+        expected.airTemperatureField = 0x1EFD;
+        uspdMessage.trmMessageArray[idx] = expected;
+        var bytes = uspdMessage.serialize();
+        var trmData = UspdMessage.getTrmData(bytes, idx);
+        var actual = new TrmMessage();
+        actual.deserialize(trmData);
+        assertEquals(expected, actual);
     }
 }

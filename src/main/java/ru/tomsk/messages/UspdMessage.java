@@ -16,6 +16,18 @@ public class UspdMessage extends Message {
         return DATA_LENGTH + CRC_LENGTH;
     }
 
+    public static byte[] getTrmData(byte[] bytes, int trmIdx) {
+        if (bytes.length != length()) {
+            throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for getTrmData", bytes.length));
+        }
+        if (trmIdx < 0 || trmIdx >= TRM_COUNT) {
+            throw new IllegalArgumentException(String.format("Incorrect trmIdx(%d) for getTrmData", bytes.length));
+        }
+        int from = 2 + trmIdx * TrmMessage.length();
+        int to = from + TrmMessage.length();
+        return Arrays.copyOfRange(bytes, from, to);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
