@@ -3,6 +3,7 @@ package ru.tomsk.temperature;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public record TemperatureRecord(int deviceID,
                                 Instant timestamp,
@@ -26,5 +27,16 @@ public record TemperatureRecord(int deviceID,
         if (airTemperature < MIN_TEMPERATURE || airTemperature > MAX_TEMPERATURE) {
             throw new IllegalArgumentException(String.format("Invalid air temperature: %f", airTemperature));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TemperatureRecord temperatureRecord = (TemperatureRecord) o;
+        return deviceID == temperatureRecord.deviceID &&
+                timestamp.until(temperatureRecord.timestamp, ChronoUnit.SECONDS) == 0 &&
+                Float.compare(surfaceTemperature, temperatureRecord.surfaceTemperature) == 0 &&
+                Float.compare(airTemperature, temperatureRecord.airTemperature) == 0;
     }
 }
