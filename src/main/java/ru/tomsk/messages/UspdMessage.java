@@ -7,10 +7,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UspdMessage extends Message {
-    static final int TRM_COUNT = 250;
+    public static final int TRM_COUNT = 250;
     private static final int DATA_LENGTH = 2 + TRM_COUNT * TrmMessage.length();
-    short idField = 0; //unsigned
-    TrmMessage[] trmMessageArray = new TrmMessage[TRM_COUNT];
+    public short idField = 0; //unsigned
+    public TrmMessage[] trmMessageArray = new TrmMessage[TRM_COUNT];
 
     public static int length() {
         return DATA_LENGTH + CRC_LENGTH;

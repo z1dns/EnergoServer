@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class TrmMessage extends Message {
     private static final int DATA_LENGTH = 10;
-    short idField = 0; //unsigned
-    int timestampField = 0; //unsigned
-    short surfaceTemperatureField = 0; //signed
-    short airTemperatureField = 0; //unsigned
+    public short idField = 0; //unsigned
+    public int timestampField = 0; //unsigned
+    public short surfaceTemperatureField = 0;
+    public short airTemperatureField = 0;
 
     public boolean isEmpty() {
         return idField == 0 && timestampField == 0 && surfaceTemperatureField == 0 && airTemperatureField == 0;
