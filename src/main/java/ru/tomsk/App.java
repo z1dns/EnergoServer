@@ -13,8 +13,10 @@ public class App
     public static void main( String[] args ) {
         try {
             LOGGER.info("Program started");
+            var settings = Settings.getInstance();
+            LOGGER.info("Program settings: {}", settings);
             var server = new Server();
-            server.start(4444);
+            server.start(settings.getServerPort());
         } catch (RuntimeException | IOException e) {
             LOGGER.error("Program running error: {}", e.getMessage());
         }
