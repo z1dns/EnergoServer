@@ -4,8 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.tomsk.connection.Server;
 
-import java.io.IOException;
-
 public class App 
 {
 
@@ -15,10 +13,14 @@ public class App
             LOGGER.info("Program started");
             var settings = Settings.getInstance();
             LOGGER.info("Program settings: {}", settings);
-            var server = new Server();
-            server.start(settings.getServerPort());
-        } catch (RuntimeException | IOException e) {
-            LOGGER.error("Program running error: {}", e.getMessage());
+            Thread.setDefaultUncaughtExceptionHandler((t, e) -> LOGGER.warn("Error in thread: {}, cause: {}", t, e.getMessage()));
+            var server = new Server(settings.getServerPort());
+            var serverThread = new Thread(server, "ServerThread");
+            serverThread.start();
+            serverThread.join();
+            LOGGER.info("Program stopped");
+        } catch (RuntimeException | InterruptedException e) {
+            LOGGER.error("Program crashed: {}", e.getMessage());
         }
     }
 }

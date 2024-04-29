@@ -7,27 +7,38 @@ import ru.tomsk.temperature.TemperatureRecordConverter;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
-public class Server {
+public class Server implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int MAX_MESSAGE_LENGTH = 4096;
+    private final int port;
 
-    public void start(int port) throws IOException {
+    public Server(int port) {
+        this.port = port;
+    }
+
+    @Override
+    public void run() {
         try (var server = new ServerSocket(port)) {
+            server.setSoTimeout(1000);
             LOGGER.info("Server started at port:{}", port);
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try (var client = server.accept();
                      var in = client.getInputStream()) {
                     LOGGER.debug("Client connected to server: {}", client);
                     var bytes = in.readNBytes(MAX_MESSAGE_LENGTH);
                     LOGGER.trace("Server received {} bytes from {}, data:{}", bytes.length, client, Arrays.toString(bytes));
                     processMessage(bytes);
+                } catch (SocketTimeoutException ignored) {
+                    //ignored
                 } catch (IOException exception) {
                     LOGGER.warn("Client error: {}", exception.getMessage());
                 }
-
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
