@@ -1,0 +1,14 @@
+﻿CREATE DATABASE energoserver;
+
+CREATE TABLE TemperatureRecords
+(recordId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+trmId INT UNSIGNED NOT NULL,
+time_stamp TIMESTAMP NOT NULL,
+surfaceTemperature FLOAT NOT NULL 
+CHECK (surfaceTemperature <= 125.0 AND surfaceTemperature>= -125.0),
+airTemperature FLOAT NOT NULL
+CHECK (airTemperature <= 125.0 AND airTemperature >= -125.0),
+UNIQUE(trmId, time_stamp)); 
+
+CREATE USER 'someuser'@'somehost' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT ON TemperatureRecords TO 'someuser'@'somehost';
