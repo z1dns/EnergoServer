@@ -2,6 +2,7 @@ package ru.tomsk.connection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.tomsk.database.TemperatureRecordService;
 import ru.tomsk.messages.UspdMessage;
 import ru.tomsk.temperature.TemperatureRecordConverter;
 
@@ -14,9 +15,11 @@ public class Server implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int MAX_MESSAGE_LENGTH = 4096;
     private final int port;
+    private final TemperatureRecordService temperatureRecordService;
 
-    public Server(int port) {
+    public Server(int port, TemperatureRecordService temperatureRecordService) {
         this.port = port;
+        this.temperatureRecordService = temperatureRecordService;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class Server implements Runnable {
         }
     }
 
-    private static void processMessage(byte[] bytes) {
+    private void processMessage(byte[] bytes) {
         if (bytes.length == UspdMessage.length()) {
             LOGGER.debug("UspdMessage received");
             processUspdMessage(bytes);
@@ -51,12 +54,13 @@ public class Server implements Runnable {
         }
     }
 
-    private static void processUspdMessage(byte[] bytes) {
+    private void processUspdMessage(byte[] bytes) {
         try {
             var uspdMessage = new UspdMessage();
             uspdMessage.deserialize(bytes);
             var temperatureRecords = TemperatureRecordConverter.fromMessage(uspdMessage);
             LOGGER.trace("Received temperature records: {}", temperatureRecords);
+            temperatureRecordService.addAll(temperatureRecords);
         } catch (RuntimeException e) {
             LOGGER.warn("Error while processing UspdMessage: {}", e.getMessage());
         }
