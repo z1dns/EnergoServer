@@ -40,6 +40,7 @@ public class Server implements Runnable {
                     LOGGER.warn("Client error: {}", exception.getMessage());
                 }
             }
+            LOGGER.info("Server stopped");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
