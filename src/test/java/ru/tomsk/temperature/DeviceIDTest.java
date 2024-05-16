@@ -1,8 +1,7 @@
-package temperature;
+package ru.tomsk.temperature;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.tomsk.temperature.DeviceID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;

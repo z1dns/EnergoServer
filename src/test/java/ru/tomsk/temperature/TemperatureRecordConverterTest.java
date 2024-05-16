@@ -1,11 +1,8 @@
-package temperature;
+package ru.tomsk.temperature;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.tomsk.messages.UspdMessage;
-import ru.tomsk.temperature.DeviceID;
-import ru.tomsk.temperature.TemperatureRecord;
-import ru.tomsk.temperature.TemperatureRecordConverter;
 
 import java.time.Instant;
 import java.util.ArrayList;
