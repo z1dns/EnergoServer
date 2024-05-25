@@ -65,7 +65,9 @@ public class TrmMessage extends Message {
     @Override
     public void deserialize(byte [] bytes) throws IllegalArgumentException {
         if (bytes.length != length()) {
-            throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for deserialize %s", bytes.length, this.getClass()));
+            throw new IllegalArgumentException(String.format("Incorrect count of bytes(%d) for deserialize %s",
+                    bytes.length,
+                    this.getClass()));
         }
         this.bytes = bytes;
         var buffer = ByteBuffer.wrap(this.bytes);

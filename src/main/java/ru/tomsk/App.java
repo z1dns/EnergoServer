@@ -14,7 +14,9 @@ public class App
             LOGGER.info("Program started");
             var settings = Settings.getInstance();
             LOGGER.info("Program settings: {}", settings);
-            var connectionProvider = new DBConnectionProvider(settings.getDatabaseURL(), settings.getDatabaseUsername(), settings.getDatabasePassword());
+            var connectionProvider = new DBConnectionProvider(settings.getDatabaseURL(),
+                    settings.getDatabaseUsername(),
+                    settings.getDatabasePassword());
             TemperatureRecordService temperatureRecordService = new TemperatureRecordService(connectionProvider);
             Thread.setDefaultUncaughtExceptionHandler((t, e) -> LOGGER.warn("Error in thread: {}, cause: {}", t, e.getMessage()));
             var server = new Server(settings.getServerPort(), temperatureRecordService);

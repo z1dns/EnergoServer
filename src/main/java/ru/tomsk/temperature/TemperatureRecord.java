@@ -11,8 +11,12 @@ public record TemperatureRecord(int deviceID,
                                 float airTemperature) {
     public static final float MIN_TEMPERATURE = -125.f;
     public static final float MAX_TEMPERATURE = 125.f;
-    public static final Instant MIN_DATETIME = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC")).toInstant();
-    public static final Instant MAX_DATETIME = ZonedDateTime.of(2100, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC")).toInstant();
+    public static final Instant MIN_DATETIME = ZonedDateTime.of(2000, 1, 1,
+            0, 0, 0, 0,
+            ZoneId.of("UTC")).toInstant();
+    public static final Instant MAX_DATETIME = ZonedDateTime.of(2100, 1, 1,
+            0, 0, 0, 0,
+            ZoneId.of("UTC")).toInstant();
 
     public TemperatureRecord {
         if (deviceID < DeviceID.MIN_VALUE) {
