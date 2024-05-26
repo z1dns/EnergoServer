@@ -1,5 +1,8 @@
 package ru.tomsk.messages;
 
+/**
+ * Класс для расчета контрольной суммы
+ */
 public class CRC16 {
     private static final short CRC16_POLY = (short) 0x8005;
     static final short CRC_INIT = (short) 0xFFFF;

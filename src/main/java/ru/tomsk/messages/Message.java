@@ -1,5 +1,10 @@
 package ru.tomsk.messages;
 
+/**
+ * Сообщение, участвующее в сетевом обмене, содержит сырые данные как массив байт.
+ * Имеет проверку на целостность с использованием контрольной суммы.
+ */
+
 public abstract class Message implements Serialization {
     protected static final int CRC_LENGTH = 2;
     protected byte[] bytes;

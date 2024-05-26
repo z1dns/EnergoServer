@@ -6,6 +6,11 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Сообщение от УСПД - устройства сбора и передачи данных, собирающее данные с оконечных устройств.
+ * Накопленные данные УСПД передает по сети Ethernet используя протокол TCP/IP.
+ */
+
 public class UspdMessage extends Message {
     public static final int TRM_COUNT = 250;
     private static final int DATA_LENGTH = 2 + TRM_COUNT * TrmMessage.length();

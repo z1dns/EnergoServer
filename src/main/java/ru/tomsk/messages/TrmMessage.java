@@ -4,6 +4,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Objects;
 
+/**
+ * Сообщение от ТРМ - терморадиомодуля, устройство измеряющее показания, необходимы для учета тепловой энергии.
+ * Показания передаются на УСПД посредством радиоканала.
+ */
+
 public class TrmMessage extends Message {
     private static final int DATA_LENGTH = 10;
     public short idField = 0; //unsigned
