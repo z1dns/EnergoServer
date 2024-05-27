@@ -5,6 +5,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Температурная запись, полученная с ТРМ.
+ * @param deviceID идентификатор устройства
+ * @param timestamp время измерения
+ * @param surfaceTemperature температура измеряемой поверхности
+ * @param airTemperature температура окружающего воздуха
+ */
+
 public record TemperatureRecord(int deviceID,
                                 Instant timestamp,
                                 float surfaceTemperature,

@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Преобразует сообщение от УСПД в температурные записи и обратно
+ */
+
 public class TemperatureRecordConverter {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final float TEMPERATURE_RATE = 100.f;

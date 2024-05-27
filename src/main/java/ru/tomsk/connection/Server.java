@@ -11,6 +11,10 @@ import java.net.ServerSocket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
+/**
+ * Получает сообщения от УСПД по TCP/IP, извлекает температурные записи и сохраняет их в БД.
+ */
+
 public class Server implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int MAX_MESSAGE_LENGTH = 4096;

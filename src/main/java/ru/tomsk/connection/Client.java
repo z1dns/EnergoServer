@@ -5,6 +5,10 @@ import ru.tomsk.messages.UspdMessage;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Клиент, имитирующий УСПД.
+ */
+
 public class Client implements Runnable {
     private final String host;
     private final int port;

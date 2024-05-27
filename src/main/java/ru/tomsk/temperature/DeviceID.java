@@ -2,6 +2,10 @@ package ru.tomsk.temperature;
 
 import java.util.Objects;
 
+/**
+ * Представляет идентификатор устройства, состоящий из индентификатора УСПД и идентификатора измеряющего устройства
+ */
+
 public class DeviceID {
     private static final int TRM_ID_SHIFT = 100_000;
     public static final int MIN_VALUE = TRM_ID_SHIFT + 1;
